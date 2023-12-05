@@ -19,15 +19,22 @@ class LikeController extends Controller
             return true;
         }
     }
-    public function likeIt(Request $request){
+    public function likeIt($postId){
 
-        if($this->checkLike($request->postId)){
+        if($this->checkLike($postId)){
             return redirect('/post');
         }
         $like = new Like;
         $like->user_id = auth()->user()->id;
-        $like->post_id = $request->postId;
+        $like->post_id = $postId;
         $like->save();
+
+        return redirect('/post');
+    }
+
+    public function dislikeIt($postId){
+        
+        Like::where('post_id', $postId)->where('user_id', auth()->user()->id)->first()->delete();
 
         return redirect('/post');
     }

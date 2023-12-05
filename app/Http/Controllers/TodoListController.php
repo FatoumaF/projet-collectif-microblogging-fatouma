@@ -14,18 +14,18 @@ class TodoListController extends Controller
 
         return view('welcome', ['listItems' => ListItem::where('is_complete', 0)->get()]);
     }
-    // public function saveItem(Request $request)
-    // {
-    //     // \Log::info(json_encode($request->all()));
+    public function saveItem(Request $request)
+    {
+        // \Log::info(json_encode($request->all()));
 
-    //     $todo = new ListItem();
-    //     $todo->name = $request->listItem;
-    //     $todo->is_complete = 0;
-    //     $todo->save();
+        $todo = new ListItem();
+        $todo->name = $request->listItem;
+        $todo->is_complete = 0;
+        $todo->save();
 
 
-    //     return redirect('/');
-    // }
+        return redirect('/');
+    }
 
     public function markComplete($id)
     {

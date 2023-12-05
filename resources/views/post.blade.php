@@ -18,18 +18,21 @@
 
 
         <h1> Features Post </h1>
+        <div style="border: 2px solid red;">
+            <p style="text-decoration: underline"> Récupérer tous les posts </p>
 
+            @foreach ($posts as $post)
+                <p>Post</p>
+                <p>Id: {{ $post->id }}</p>
+                <p>Image: {{ $post->image }}</p>
+                <p>Content: {{ $post->content }}</p>
+                <p>Likes: {{ $post->likes}}</p>
+                <p>Création: {{ $post->created_at }}</p>
+                <p>User Id: {{ $post->user_id }}</p>
 
-        @foreach ($posts as $post)
-            <p>Post</p>
-            <p>Id: {{ $post->id }}</p>
-            <p>Image: {{ $post->image }}</p>
-            <p>Content: {{ $post->content }}</p>
-            <p>Création: {{ $post->created_at }}</p>
-            <p>User Id: {{ $post->user_id }}</p>
-
-            </form>
-        @endforeach
+                </form>
+            @endforeach
+        </div>
 
 
         <div style="border: 2px solid red;">

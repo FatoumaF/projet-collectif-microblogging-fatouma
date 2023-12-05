@@ -11,7 +11,10 @@ class PostController extends Controller
     public function index()
     {
 
-        return view('post');
+        $posts = Post::all();
+        $posts = $this->getLikes($posts);
+        
+        return view('post', ['posts' => $posts]);
     }
 
     public function savePost(Request $request){
@@ -25,5 +28,20 @@ class PostController extends Controller
 
         return redirect("/post");
     }
+
+    public function getPostsByUserId($id){
+        
+        $posts = Post::where("user_id", $id)->get();
+        $posts = $this->getLikes($posts);
+        
+    }
+
+    private function getLikes($posts){
+        foreach ($posts as $post) { 
+            $post->likes = 5; // A définir
+        }
+        return $posts;
+    }
+
 
 }

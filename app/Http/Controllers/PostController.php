@@ -11,7 +11,7 @@ class PostController extends Controller
     public function index()
     {
 
-        return view('todo');
+        return view('post');
     }
 
     public function savePost(Request $request){
@@ -23,7 +23,7 @@ class PostController extends Controller
         // $post->user_id = auth()->user()->id; // A revérifier
         $post->save();
 
-        return redirect("/");
+        return redirect("/post");
     }
 
 }

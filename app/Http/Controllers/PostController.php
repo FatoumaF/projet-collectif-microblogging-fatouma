@@ -19,12 +19,11 @@ class PostController extends Controller
     }
 
     public function savePost(Request $request){
-        // \Log::info(json_encode($request->all()));
         $post = new Post;
         $post->image = $request->postImage;
         $post->content = $request->postContent;
-        $post->user_id = 1;
-        // $post->user_id = auth()->user()->id; // A revérifier
+        // $post->user_id = 1;
+        $post->user_id = auth()->user()->id; // A revérifier
         $post->save();
 
         return redirect("/post");
@@ -32,9 +31,10 @@ class PostController extends Controller
 
     public function getPostsByUserId($id){
         
-        $posts = Post::where("user_id", $id)->get()->update(['likes' => [LikeController::class, 'getLikes']]);
+        $posts = Post::where("user_id", $id)->get();
+        $posts = $this->updateLikes($posts);
         
-        
+        return view('post', ['posts' => $posts]);
     }
 
     private function updateLikes($posts){

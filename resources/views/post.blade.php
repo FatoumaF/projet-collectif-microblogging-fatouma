@@ -20,17 +20,23 @@
         <h1> Features Post </h1>
         <div style="border: 2px solid red;">
             <p style="text-decoration: underline"> Récupérer tous les posts </p>
-
             @foreach ($posts as $post)
+                <p> ---------------------- </p>
                 <p>Post</p>
                 <p>Id: {{ $post->id }}</p>
                 <p>Image: {{ $post->image }}</p>
                 <p>Content: {{ $post->content }}</p>
-                <p>Likes: {{ $post->likes}}</p>
+                <p>Likes: {{ $post->likes }}</p>
                 <p>Création: {{ $post->created_at }}</p>
                 <p>User Id: {{ $post->user_id }}</p>
-
-                </form>
+                @if (!app('App\Http\Controllers\LikeController')->checkLike($post->id))
+                    <form method="post" action="{{ route('like') }}" accept-charset="UTF-8">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="postId" value="{{ $post->id }}">
+                        <button value>Liker</button>
+    
+                    </form>
+                @endif
             @endforeach
         </div>
 

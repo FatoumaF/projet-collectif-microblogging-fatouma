@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\TodoListController;
@@ -15,13 +16,11 @@ use App\Http\Controllers\PostController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/post', [PostController::class, 'index']);
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/newPost', [PostController::class, 'savePost'])->name('newPost');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -33,6 +32,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::get('/post', [PostController::class, 'index']);
+Route::post('/newPost', [PostController::class, 'savePost'])->name('newPost');
 
-// Route::post('/markComplete/{id}', [TodoListController::class,'markComplete'])->name('markComplete');
+Route::post('/likeIt', [LikeController::class, 'likeIt'])->name('like');
+
+require __DIR__.'/auth.php';

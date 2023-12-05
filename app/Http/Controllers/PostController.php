@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Http\Controllers\LikeController;
 
 class PostController extends Controller
 {
@@ -12,8 +13,8 @@ class PostController extends Controller
     {
 
         $posts = Post::all();
-        $posts = $this->getLikes($posts);
-        
+        $posts = $this->updateLikes($posts);
+
         return view('post', ['posts' => $posts]);
     }
 
@@ -31,14 +32,16 @@ class PostController extends Controller
 
     public function getPostsByUserId($id){
         
-        $posts = Post::where("user_id", $id)->get();
-        $posts = $this->getLikes($posts);
+        $posts = Post::where("user_id", $id)->get()->update(['likes' => [LikeController::class, 'getLikes']]);
+        
         
     }
 
-    private function getLikes($posts){
+    private function updateLikes($posts){
+        
+        $likeControllerInstance = new LikeController();
         foreach ($posts as $post) { 
-            $post->likes = 5; // A définir
+            $post->likes = $likeControllerInstance->getLikes($post->id);
         }
         return $posts;
     }

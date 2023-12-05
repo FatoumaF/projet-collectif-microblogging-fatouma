@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TodoListController;
+// use App\Http\Controllers\TodoListController;
 use App\Http\Controllers\PostController;
 
 /*
@@ -14,12 +14,12 @@ use App\Http\Controllers\PostController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', function(){
-    return view('welcome');
-});
+// Route::get('/', function(){
+//     return view('welcome');
+// });
 
-// Route::get('/', [TodoListController::class, 'index']);
+Route::get('/', [PostController::class, 'index']);
 
-Route::post('/saveItem', [PostController::class, 'savePost'])->name('saveItem');
+Route::post('/newPost', [PostController::class, 'savePost'])->name('newPost');
 
-Route::post('/markComplete/{id}', [TodoListController::class,'markComplete'])->name('markComplete');
+// Route::post('/markComplete/{id}', [TodoListController::class,'markComplete'])->name('markComplete');

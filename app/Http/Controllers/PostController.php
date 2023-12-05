@@ -8,11 +8,22 @@ use App\Models\Post;
 class PostController extends Controller
 {
 
-    public function savePost(Request $request){
-        $post = new Post;
-        $post->image = $request->imagePost;
-        $post->content = $request->contentPost;
-        $post->user_id = auth()->user()->id; // A revérifier
+    public function index()
+    {
+
+        return view('todo');
     }
-    //
+
+    public function savePost(Request $request){
+        // \Log::info(json_encode($request->all()));
+        $post = new Post;
+        $post->image = $request->postImage;
+        $post->content = $request->postContent;
+        $post->user_id = 1;
+        // $post->user_id = auth()->user()->id; // A revérifier
+        $post->save();
+
+        return redirect("/");
+    }
+
 }

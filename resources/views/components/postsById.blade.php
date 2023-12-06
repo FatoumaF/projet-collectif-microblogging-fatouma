@@ -1,5 +1,7 @@
+@props(['postsById' => $postsById])
+
 <div style="border: 2px solid red;">
-    <p style="text-decoration: underline"> Récupérer tous les posts par ID </p>
+    <p style="text-decoration: underline"> Récupérer les posts par userID </p>
     @foreach ($postsById as $post)
         <div style="border: 2px solid orange">
             <p>Id: {{ $post->id }}</p>

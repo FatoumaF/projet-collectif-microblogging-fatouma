@@ -14,8 +14,9 @@ class PostController extends Controller
 
         $posts = Post::all();
         $posts = $this->updateLikes($posts);
+        $postsById = $this->getPostsByUserId(auth()->user()->id);
 
-        return view('post', ['posts' => $posts]);
+        return view('post', ['posts' => $posts, 'postsById' => $postsById]);
     }
 
     public function savePost(Request $request){
@@ -31,10 +32,10 @@ class PostController extends Controller
 
     public function getPostsByUserId($id){
         
-        $posts = Post::where("user_id", $id)->get();
-        $posts = $this->updateLikes($posts);
+        $postsById = Post::where("user_id", $id)->get();
+        $postsById = $this->updateLikes($postsById);
         
-        return view('post', ['posts' => $posts]);
+        return $postsById;
     }
 
     private function updateLikes($posts){

@@ -32,10 +32,22 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/post', [PostController::class, 'index']);
+Route::get('/post', function() {
+    $posts = (new PostController)->getAllPosts();
+    $postsById = (new PostController)->getPostsByUserId(auth()->user()->id);
+
+    return view('post', ['posts' => $posts, 'postsById' => $postsById]);
+});
+
 Route::post('/newPost', [PostController::class, 'savePost'])->name('newPost');
 
 Route::post('/likeIt/{postId}', [LikeController::class, 'likeIt'])->name('like');
 Route::post('/dislikeIt/{postId}', [LikeController::class, 'dislikeIt'])->name('dislike');
+
+Route::get('/feed', function() {
+    $posts = (new PostController)->getAllPosts();
+
+    return view('feed', ['posts' => $posts]);
+});
 
 require __DIR__.'/auth.php';

@@ -22,20 +22,20 @@ class LikeController extends Controller
     public function likeIt($postId){
 
         if($this->checkLike($postId)){
-            return redirect('/feed');
+            return back();
         }
         $like = new Like;
         $like->user_id = auth()->user()->id;
         $like->post_id = $postId;
         $like->save();
 
-        return redirect('/feed');
+        return back();
     }
 
     public function dislikeIt($postId){
         
         Like::where('post_id', $postId)->where('user_id', auth()->user()->id)->first()->delete();
 
-        return redirect('/feed');
+        return back();
     }
 }

@@ -7,7 +7,6 @@
     document.querySelectorAll('.likeButton').forEach(button => {
         const postId = button.getAttribute('postId')
         let liked = button.getAttribute('liked')
-        console.log(liked)
 
         if (liked == 1) {
             button.innerText = 'Supprimer le like'
@@ -17,12 +16,15 @@
 
         button.addEventListener('click', () => {
             xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
+                if (this.readyState === 4 && this.status === 200) {
                     if (button.innerText == 'Supprimer le like') {
                         button.innerText = 'Like'
+                        
                     } else if (button.innerText == 'Like') {
                         button.innerText = 'Supprimer le like'
                     }
+                    let likes = button.parentElement.querySelector('.likes')
+                    likes.innerText = parseInt(likes.innerText)+parseInt(this.response)
                 } else {
                     console.log('erreur')
                 }

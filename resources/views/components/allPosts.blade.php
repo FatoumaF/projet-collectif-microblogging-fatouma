@@ -6,6 +6,5 @@
         <div style="border: 2px solid orange">
             <x-post :post="$post" />
         </div>
-        <x-like :postId="$post->id" :liked="$post->liked" />
     @endforeach
 </div>

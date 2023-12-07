@@ -1,6 +1,6 @@
 @props(['post' => $post])
 
     <p>{{ $post->image }}</p>
-    <p>{{ $post->likes }}</p>
+    <p class="likes">{{ $post->likes }}</p>
     <p>{{ $post->content }}</p>
-    <p>{{ $post->liked }}</p>
+    <x-like :postId="$post->id" :liked="$post->liked" />

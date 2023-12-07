@@ -8,22 +8,32 @@ use App\Models\Post;
 
 class LikeController extends Controller
 {
-    public function getLikes($postId){
+    public function getLikes($postId)
+    {
         $likes = Like::where("post_id", $postId)->count();
         // $likes = 33;
         return $likes;
     }
-
-    public function checkLike($postId) {
-        if(Like::where("post_id", $postId)->where("user_id", auth()->user()->id)->count() > 0){
+    public function likeOrDislike($postId)
+    {
+        if ($this->checkLike($postId)) {
+            $this->disLikeIt($postId);
+        } else {
+            $this->likeIt($postId);
+        }
+        return back();
+    }
+    public function checkLike($postId)
+    {
+        if (Like::where("post_id", $postId)->where("user_id", auth()->user()->id)->count() > 0) {
             return true;
         }
-    }
-    public function likeIt($postId){
-
-        if($this->checkLike($postId)){
-            return back();
+        else{
+            return false;
         }
+    }
+    private function likeIt($postId)
+    {
         $like = new Like;
         $like->user_id = auth()->user()->id;
         $like->post_id = $postId;
@@ -32,8 +42,8 @@ class LikeController extends Controller
         return back();
     }
 
-    public function dislikeIt($postId){
-        
+    private function dislikeIt($postId)
+    {
         Like::where('post_id', $postId)->where('user_id', auth()->user()->id)->first()->delete();
 
         return back();

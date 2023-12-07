@@ -53,9 +53,9 @@ class PostController extends Controller
 
     private function updateLikes($posts)
     {
-        $likeControllerInstance = new LikeController();
         foreach ($posts as $post) {
-            $post->likes = $likeControllerInstance->getLikes($post->id);
+            $post->likes = (new LikeController)->getLikes($post->id);
+            $post->liked = (new LikeController)->checkLike($post->id)? 1:-1;
         }
 
         return $posts;

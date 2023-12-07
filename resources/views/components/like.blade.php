@@ -1,29 +1,37 @@
-@props(['postId' => $postId])
+@props(['postId' => $postId, 'liked' => $liked])
 
-<form method="post" action="{{ route('likeOrDislike', ['postId' => $postId]) }}" accept-charset="UTF-8">
-    {{ csrf_field() }}
-    <input type="hidden" name="postId" value="{{ $postId }}">
-    <button id="{{ $postId }}"></button>
-</form>
-@if (app('App\Http\Controllers\LikeController')->checkLike($postId))
-    <p>Liké</p>
-@else
-    <p>Nope</p>
-@endif
+<button class="likeButton" postId="{{ $postId }}" liked={{ $liked }}></button>
 
-<?php
-$liked = app('App\Http\Controllers\LikeController')->checkLike($postId) ? 1 : 0;
-echo "
-    <script>
-        let button$postId = document.getElementById('$postId')
-        console.log(button$postId)
-        if($liked == 0){
-            button$postId.innerText = 'Like'
-        }
-        else{
-            button$postId.innerText = 'Supprimer le like'
+<script>
+    var xmlhttp = new XMLHttpRequest()
+    document.querySelectorAll('.likeButton').forEach(button => {
+        const postId = button.getAttribute('postId')
+        let liked = button.getAttribute('liked')
+        console.log(liked)
+
+        if (liked == 1) {
+            button.innerText = 'Supprimer le like'
+        } else if(liked == -1) {
+            button.innerText = 'Like'
         }
 
-    </script>
-    ";
-?>
+        button.addEventListener('click', () => {
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (button.innerText == 'Supprimer le like') {
+                        button.innerText = 'Like'
+                    } else if (button.innerText == 'Like') {
+                        button.innerText = 'Supprimer le like'
+                    }
+                } else {
+                    console.log('erreur')
+                }
+            };
+            xmlhttp.open('GET', "likeOrDislike/" + postId, true);
+            xmlhttp.send();
+
+
+        })
+
+    });
+</script>

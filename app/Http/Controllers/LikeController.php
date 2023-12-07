@@ -11,7 +11,6 @@ class LikeController extends Controller
     public function getLikes($postId)
     {
         $likes = Like::where("post_id", $postId)->count();
-        // $likes = 33;
         return $likes;
     }
     public function likeOrDislike($postId)
@@ -21,7 +20,7 @@ class LikeController extends Controller
         } else {
             $this->likeIt($postId);
         }
-        return back();
+        // return back();
     }
     public function checkLike($postId)
     {
@@ -39,13 +38,13 @@ class LikeController extends Controller
         $like->post_id = $postId;
         $like->save();
 
-        return back();
+        // return back();
     }
 
     private function dislikeIt($postId)
     {
         Like::where('post_id', $postId)->where('user_id', auth()->user()->id)->first()->delete();
 
-        return back();
+        // return back();
     }
 }

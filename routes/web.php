@@ -41,7 +41,7 @@ Route::get('/post', function() {
 
 Route::post('/newPost', [PostController::class, 'savePost'])->name('newPost');
 
-Route::post('/likeOrDislike/{postId}', [LikeController::class, 'likeOrDislike'])->name('likeOrDislike');
+Route::get('/likeOrDislike/{postId}', [LikeController::class, 'likeOrDislike'])->name('likeOrDislike');
 
 Route::get('/feed', function() {
     $posts = (new PostController)->getAllPosts();

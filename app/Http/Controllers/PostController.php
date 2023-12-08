@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Http\Controllers\LikeController;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -24,10 +27,30 @@ class PostController extends Controller
         return view('feed', ['posts' => $posts]);
     }
 
+    private function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'postImage' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $imageName = time() . '.' . $request->postImage->extension();
+        $request->postImage->move(public_path('images'), $imageName);
+
+        return $imageName;
+    }
+
     public function savePost(Request $request)
     {
+        
+        $imageName = $this->store($request);
+    
+
         $post = new Post;
-        $post->image = $request->postImage;
+        $post->image = $imageName;
         $post->content = $request->postContent;
         $post->user_id = auth()->user()->id;
         $post->save();

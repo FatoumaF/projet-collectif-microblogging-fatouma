@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\TodoListController;
 use App\Http\Controllers\PostController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +40,12 @@ Route::get('/post', function() {
     return view('post', ['posts' => $posts, 'postsById' => $postsById]);
 });
 
-Route::post('/newPost', [PostController::class, 'savePost'])->name('newPost');
+// Route::post('/newPost', [PostController::class, 'savePost'])->name('newPost');
+
+Route::post('/newPost', function(Request $request){
+    dd($request);
+    (new PostController)->savePost($request);
+})->name('newPost');
 
 Route::get('/likeOrDislike/{postId}', [LikeController::class, 'likeOrDislike'])->name('likeOrDislike');
 

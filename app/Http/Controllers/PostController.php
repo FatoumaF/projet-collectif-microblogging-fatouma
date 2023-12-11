@@ -55,7 +55,7 @@ class PostController extends Controller
         $post->user_id = auth()->user()->id;
         // $post->save();
 
-        return redirect("/post");
+        return redirect("/feed");
     }
 
     public function getAllPosts()

@@ -49,4 +49,8 @@ Route::get('/feed', function() {
     return view('feed', ['posts' => $posts]);
 });
 
+Route::get('/postcreation', function() {
+    return view('postcreation', []);
+})->middleware(['auth', 'verified'])->name('postcreation');
+
 require __DIR__.'/auth.php';

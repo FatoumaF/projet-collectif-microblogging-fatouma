@@ -33,8 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 // Route::get('/', [CommentController::class, 'index']);
-Route::get('/comments', [CommentController::class, 'fetchComments']);
-Route::post('/comments', [CommentController::class, 'store']);
+Route::post('/save-comment', [CommentController::class, 'saveComment'])->name('saveComment');
+Route::post('/comments', [CommentController::class, 'fetchComments']);
 
 Route::get('/post', [PostController::class, 'index']);
 Route::post('/newPost', [PostController::class, 'savePost'])->name('newPost');

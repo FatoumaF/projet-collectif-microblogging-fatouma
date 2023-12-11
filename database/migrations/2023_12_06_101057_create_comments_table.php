@@ -12,18 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id') ->on('users')->onDelete('cascade');
-            $table ->string('author');
-            $table ->string('content');
+            $table->id(); 
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
+            $table->string('content');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+  
     public function down(): void
     {
         Schema::dropIfExists('comments');
     }
 };
+

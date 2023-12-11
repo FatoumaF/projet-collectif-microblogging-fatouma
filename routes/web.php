@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\TodoListController;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+// Route::get('/', [CommentController::class, 'index']);
+Route::post('/save-comment', [CommentController::class, 'saveComment'])->name('saveComment');
+Route::post('/comments', [CommentController::class, 'fetchComments']);
 
 Route::get('/post', function() {
     $posts = (new PostController)->getAllPosts();

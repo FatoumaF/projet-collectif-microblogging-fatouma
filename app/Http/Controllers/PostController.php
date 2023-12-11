@@ -47,13 +47,13 @@ class PostController extends Controller
     {
         
         $imageName = $this->store($request);
-    
+        dd($imageName);
 
         $post = new Post;
         $post->image = $imageName;
         $post->content = $request->postContent;
         $post->user_id = auth()->user()->id;
-        $post->save();
+        // $post->save();
 
         return redirect("/post");
     }

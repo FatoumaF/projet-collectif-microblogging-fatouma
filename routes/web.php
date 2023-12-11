@@ -43,8 +43,8 @@ Route::get('/post', function() {
 // Route::post('/newPost', [PostController::class, 'savePost'])->name('newPost');
 
 Route::post('/newPost', function(Request $request){
-    dd($request);
     (new PostController)->savePost($request);
+    dd($request);
 })->name('newPost');
 
 Route::get('/likeOrDislike/{postId}', [LikeController::class, 'likeOrDislike'])->name('likeOrDislike');

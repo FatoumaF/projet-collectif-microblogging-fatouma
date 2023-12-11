@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\User;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -11,23 +12,26 @@ class CommentController extends Controller
     public function saveComment(Request $request)
     {
         $comment = new Comment;
-        $comment->postId = $request->postId;
+        $comment->post_id = $request->postId;
         $comment->content = $request->postContent;
         $comment->user_id = auth()->user()->id;
         $comment->save();
 
-        // Vous pouvez déclencher un événement ici si nécessaire
-        event(new CommentEvent($comment));
-
-        return redirect('/post');
+        return redirect()->back();
     }
 
-    public function fetchComments()
+    public function fetchComments($postId)
     {
-        // Récupérez tous les articles avec leurs commentaires associés
-        $posts = Post::with('comments')->get();
+        $comments = Comment::where('post_id', $postId)->get();
+        $comments = $this->updateComment($comments);
 
-        return view('post-comments', compact('posts'));
+        return $comments;
+    }
+    private function updateComment($comments){
+        foreach($comments as $comment){
+            $comment->userName = User::find($comment->user_id)->name;
+        }
+        return $comments;
     }
 }
 

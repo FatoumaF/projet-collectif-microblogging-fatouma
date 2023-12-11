@@ -3,8 +3,8 @@
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\TodoListController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\FollowController;
 use Illuminate\Http\Request;
 
 /*
@@ -40,6 +40,12 @@ Route::get('/post', function() {
     return view('post', ['posts' => $posts, 'postsById' => $postsById]);
 });
 
+Route::get('user/{userId}', function($userId){
+    $user = (new ProfileController)->showUser($userId);
+
+    return view('userProfile', ['user' => $user]);
+});
+
 // Route::post('/newPost', [PostController::class, 'savePost'])->name('newPost');
 
 Route::post('/newPost', function(Request $request){
@@ -48,6 +54,7 @@ Route::post('/newPost', function(Request $request){
 })->name('newPost');
 
 Route::get('/likeOrDislike/{postId}', [LikeController::class, 'likeOrDislike'])->name('likeOrDislike');
+Route::get('/follow/{userId}', [FollowController::class, 'followOrUnfollow'])->name('followOrUnfollow');
 
 Route::get('/feed', function() {
     $posts = (new PostController)->getAllPosts();

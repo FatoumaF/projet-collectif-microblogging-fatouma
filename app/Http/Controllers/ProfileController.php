@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Symfony\Component\HttpKernel\Profiler\Profile;
+use App\Models\User;
+use App\Http\Controllers\FollowController;
 
 class ProfileController extends Controller
 {
@@ -56,5 +59,18 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function showUser($userId)
+    {
+        $user = User::find($userId);
+        $user = $this->updateFollowers($user);
+        return $user;
+    }
+    private function updateFollowers($user){
+        $user->followers = (new FollowController)->getFollowers($user->id);
+        $user->followed = (new FollowController)->checkFollow($user->id)? 1:-1;
+
+        return $user;
     }
 }

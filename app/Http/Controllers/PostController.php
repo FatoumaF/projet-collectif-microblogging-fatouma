@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
@@ -47,13 +48,12 @@ class PostController extends Controller
     {
         
         $imageName = $this->store($request);
-        dd($imageName);
 
         $post = new Post;
-        $post->image = $imageName;
+        $post->image = "./public/images/$imageName";
         $post->content = $request->postContent;
         $post->user_id = auth()->user()->id;
-        // $post->save();
+        $post->save();
 
         return redirect("/feed");
     }
@@ -61,7 +61,7 @@ class PostController extends Controller
     public function getAllPosts()
     {
         $posts = Post::all();
-        $posts = $this->updateLikes($posts);
+        $posts = $this->updateCommentsLikes($posts);
 
         return $posts;
     }
@@ -69,16 +69,17 @@ class PostController extends Controller
     public function getPostsByUserId($id)
     {
         $postsById = Post::where("user_id", $id)->get();
-        $postsById = $this->updateLikes($postsById);
+        $postsById = $this->updateCommentsLikes($postsById);
 
         return $postsById;
     }
 
-    private function updateLikes($posts)
+    private function updateCommentsLikes($posts)
     {
         foreach ($posts as $post) {
             $post->likes = (new LikeController)->getLikes($post->id);
             $post->liked = (new LikeController)->checkLike($post->id)? 1:-1;
+            $post->comments = (new CommentController)->fetchComments($post->id);
         }
 
         return $posts;

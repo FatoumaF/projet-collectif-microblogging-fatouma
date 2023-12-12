@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\FollowController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+
 Route::get('/post', function() {
     $posts = (new PostController)->getAllPosts();
     $postsById = (new PostController)->getPostsByUserId(auth()->user()->id);
@@ -40,21 +43,18 @@ Route::get('/post', function() {
     return view('post', ['posts' => $posts, 'postsById' => $postsById]);
 });
 
+Route::post('/newPost', [PostController::class, 'savePost'])->name('newPost');
+Route::post('/newComment', [CommentController::class, 'saveComment'])->name('newComment');
+
+Route::get('/likeOrDislike/{postId}', [LikeController::class, 'likeOrDislike'])->name('likeOrDislike');
+Route::get('user/followOrUnfollow/{userId}', [FollowController::class, 'followOrUnfollow'])->name('followOrUnfollow');
+
+
 Route::get('user/{userId}', function($userId){
     $user = (new ProfileController)->showUser($userId);
 
     return view('userProfile', ['user' => $user]);
 });
-
-// Route::post('/newPost', [PostController::class, 'savePost'])->name('newPost');
-
-Route::post('/newPost', function(Request $request){
-    (new PostController)->savePost($request);
-    dd($request);
-})->name('newPost');
-
-Route::get('/likeOrDislike/{postId}', [LikeController::class, 'likeOrDislike'])->name('likeOrDislike');
-Route::get('/follow/{userId}', [FollowController::class, 'followOrUnfollow'])->name('followOrUnfollow');
 
 Route::get('/feed', function() {
     $posts = (new PostController)->getAllPosts();

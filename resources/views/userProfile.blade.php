@@ -15,16 +15,7 @@
 
 <body class="antialiased">
     <div>
-        <h1>User name: {{ $user->name }}</h1>
-        <p>User id: {{ $user->id }}</p>
-        <p>Followers: {{ $user->followers }}</p>
-        @if ($user->followed == 1)
-            <p>Suivi</p>
-        @else
-            <p>Pas suivi</p>
-        @endif
-
-
+        <x-userCard :user="$user" />
     </div>
 </body>
 

@@ -17,14 +17,20 @@
             80%  { background: #040275; }
             100% { background: black; }
         }
+        @keyframes titleanimation{
+
+        }
         .ipt{
             border: none
         }
     </style>
 </head>
 <body class="thebdy">
-    <h1>Crée un post !</h1>
+    <div>
+        <x-navbar />
+    </div>
     <div style="color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+        <h1>Crée un post !</h1>
         <div>
             <form method="post" action="{{ route('newPost') }}" accept-charset="UTF-8">
                 {{ csrf_field() }}

@@ -31,14 +31,7 @@
     </div>
     <div style="color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
         <h1>Crée un post !</h1>
-        <div>
-            <form method="post" action="{{ route('newPost') }}" accept-charset="UTF-8">
-                {{ csrf_field() }}
-                <input class="ipt" type="file" name="postImage" placeholder="Lien de l'image">
-                <input class="ipt" type="text" name="postContent" placeholder="Message du post">
-                <button class="ipt" >Nouveau post</button>
-            </form>
-        </div>
+        <x-newPost/>
     </div>
 </body>
 </html>

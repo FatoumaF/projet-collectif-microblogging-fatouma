@@ -1,7 +1,6 @@
 @props(['postId' => $postId])
 
-<div style="border: 2px solid red;">
-    <p style="text-decoration: underline">Nouveau commentaire</p>
+<div>
     <form method="POST" action="{{ route('newComment') }}" enctype="multipart/form-data">
         {{ csrf_field() }}
         <input type="hidden" name="postId" value="{{$postId}}">

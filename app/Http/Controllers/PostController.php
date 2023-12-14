@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\User;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Log;
@@ -61,7 +62,7 @@ class PostController extends Controller
     public function getAllPosts()
     {
         $posts = Post::all();
-        $posts = $this->updateCommentsLikes($posts);
+        $posts = $this->updateCommentsLikesUser($posts);
 
         return $posts;
     }
@@ -69,17 +70,18 @@ class PostController extends Controller
     public function getPostsByUserId($id)
     {
         $postsById = Post::where("user_id", $id)->get();
-        $postsById = $this->updateCommentsLikes($postsById);
+        $postsById = $this->updateCommentsLikesUser($postsById);
 
         return $postsById;
     }
 
-    private function updateCommentsLikes($posts)
+    private function updateCommentsLikesUser($posts)
     {
         foreach ($posts as $post) {
             $post->likes = (new LikeController)->getLikes($post->id);
             $post->liked = (new LikeController)->checkLike($post->id)? 1:-1;
             $post->comments = (new CommentController)->fetchComments($post->id);
+            $post->userName = User::where("id", $post->user_id)->first()->name;
         }
 
         return $posts;

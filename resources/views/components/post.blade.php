@@ -1,6 +1,7 @@
 @props(['post' => $post])
 
 <img src="{{ asset($post->image) }}"></img>
+<p>Auteur: {{ $post->userName }}</p>
 <p> {{ $post->content }}</p>
 <p class="likes">{{ $post->likes }}</p>
 <x-like :postId="$post->id" :liked="$post->liked" />
